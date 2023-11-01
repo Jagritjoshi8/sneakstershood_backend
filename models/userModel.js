@@ -16,6 +16,22 @@ const userSchema = new mongoose.Schema(
       lowerCase: true,
       validate: [validator.isEmail, "pls provide a valid email"],
     },
+    age: {
+      type: Number,
+      required: [true, "please tell us your age!"],
+    },
+    gender: {
+      type: String,
+      required: [true, "please tell us your gender!"],
+    },
+    phonenumber: {
+      type: Number,
+      required: [true, "please tell us your phone number!"],
+    },
+    address: {
+      type: String,
+      required: [true, "please tell us your address!"],
+    },
 
     password: {
       type: String,

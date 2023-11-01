@@ -21,6 +21,6 @@ const commentSchema = new mongoose.Schema({
 commentSchema.plugin(mongooseDelete, { deletedAt: true });
 commentSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
-const Comment = new mongoose.model("Comment", commentSchema);
+// const Comment = new mongoose.model("Comment", commentSchema);
 
-module.exports = Comment;
+// module.exports = Comment;

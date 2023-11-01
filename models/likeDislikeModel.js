@@ -30,6 +30,6 @@ likeDislikeSchema.virtual("likeCount", {
 likeDislikeSchema.plugin(mongooseDelete, { deletedAt: true });
 likeDislikeSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
-const LikeDislike = new mongoose.model("LikeDislike", likeDislikeSchema);
+// const LikeDislike = new mongoose.model("LikeDislike", likeDislikeSchema);
 
-module.exports = LikeDislike;
+// module.exports = LikeDislike;

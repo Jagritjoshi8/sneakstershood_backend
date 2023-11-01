@@ -7,29 +7,51 @@ const bcrypt = require("bcryptjs");
 
 // ***********************SIGN TOKEN****************************
 
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
+const signToken = (id, name, email, address, age, phonenumber, gender) => {
+  return jwt.sign(
+    { id, name, email, address, age, phonenumber, gender },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    }
+  );
 };
 const createSendToken = (user, statusCode, res) => {
-  let token = signToken(user._id);
+  let token = signToken(
+    user._id,
+    user.name,
+    user.email,
+    user.address,
+    user.age,
+    user.phonenumber,
+    user.gender
+  );
 
   res.status(statusCode).json({
     status: "success",
     token,
-    user,
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    address: user.address,
+    age: user.age,
+    phonenumber: user.phonenumber,
+    gender: user.gender,
   });
 };
 
 // ********************SIGNING UP USER***********************
 
 const signup = catchAsync(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, age, gender, phonenumber, address, password } = req.body;
 
   const newUser = await User.create({
     name,
     email,
+    age,
+    gender,
+    phonenumber,
+    address,
     password,
   });
   createSendToken(newUser, 201, res);
@@ -50,13 +72,26 @@ const login = catchAsync(async (req, res, next) => {
     return next(new AppError("Incorrect email or password", 401));
   }
 
-  const token = signToken(user._id);
+  const token = signToken(
+    user._id,
+    user.name,
+    user.email,
+    user.address,
+    user.age,
+    user.phonenumber,
+    user.gender
+  );
 
   res.status(200).json({
     status: "success",
     _id: user._id,
     email,
     token,
+    name: user.name,
+    address: user.address,
+    age: user.age,
+    phonenumber: user.phonenumber,
+    gender: user.gender,
   });
 });
 

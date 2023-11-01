@@ -42,6 +42,6 @@ BlogPostSchema.virtual("topicName", {
 BlogPostSchema.plugin(mongooseDelete, { deletedAt: true });
 BlogPostSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
-const BlogPostModel = new mongoose.model("BlogPost", BlogPostSchema);
+// const BlogPostModel = new mongoose.model("BlogPost", BlogPostSchema);
 
-module.exports = BlogPostModel;
+// module.exports = BlogPostModel;
