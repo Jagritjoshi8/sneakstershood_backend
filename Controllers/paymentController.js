@@ -5,7 +5,7 @@ const AppError = require("../utils/appError");
 const OrderModel = require("../models/OrderModel");
 
 const checkout = catchAsync(async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const {
     amount,
     coustomerDetails,
@@ -29,7 +29,7 @@ const checkout = catchAsync(async (req, res, next) => {
   };
 
   const order = await instance.orders.create(options);
-  console.log(order);
+  // console.log(order);
   if (order.id) {
     await OrderModel.create({
       order,
@@ -73,7 +73,7 @@ const paymentVerification = catchAsync(async (req, res, next) => {
 });
 const getUserOrder = catchAsync(async (req, res, next) => {
   const userid = req.params.id;
-  console.log(userid);
+  // console.log(userid);
   //   const uname = "sneaker1";
   const userOrder = await OrderModel.find({ "coustomerDetails.id": userid })
     .populate("order")

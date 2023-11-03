@@ -4,7 +4,7 @@ const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const bcrypt = require("bcryptjs");
-
+const upload = require("../Middleware/multerSetup");
 // ***********************SIGN TOKEN****************************
 
 const signToken = (id, name, email, address, age, phonenumber, gender) => {
@@ -44,6 +44,9 @@ const createSendToken = (user, statusCode, res) => {
 
 const signup = catchAsync(async (req, res, next) => {
   const { name, email, age, gender, phonenumber, address, password } = req.body;
+  console.log("file----", req.file);
+
+  const profileimg = req.file.path;
 
   const newUser = await User.create({
     name,
@@ -53,6 +56,7 @@ const signup = catchAsync(async (req, res, next) => {
     phonenumber,
     address,
     password,
+    profileimg,
   });
   createSendToken(newUser, 201, res);
 });

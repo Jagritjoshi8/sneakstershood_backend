@@ -50,6 +50,9 @@ const userSchema = new mongoose.Schema(
         message: "passwords are not matching",
       },
     },
+    profileimg: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
