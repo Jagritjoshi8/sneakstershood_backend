@@ -31,14 +31,16 @@ const getAllComments = catchAsync(async (req, res, next) => {
 //************************* GET COMMENT OF A BLOG **************************
 const getCommentsOfBlog = catchAsync(async (req, res, next) => {
   const id = req.params.id;
+
   const comments = await Comment.find();
 
-  const fcomments = comments.filter((commentss) => commentss.blog.equals(id));
-  const blogobj = await BlogPostModel.findById(id);
+  const productReviews = comments.filter(
+    (commentss) => commentss.product === Number(id)
+  );
+
   res.status(200).json({
-    numberOfComments: fcomments.length,
-    blog: blogobj.title,
-    fcomments,
+    numberOfReviews: productReviews.length,
+    productReviews,
   });
 });
 
@@ -47,14 +49,15 @@ const getCommentsOfBlog = catchAsync(async (req, res, next) => {
 const createComment = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   const newComment = await Comment.create({
-    content: req.body.content,
-    blog: id,
-    commentBy: req.user.id,
+    content: req.body.comment,
+    rating: req.body.rating,
+    product: id,
+    commentBy: req.body.user,
   });
 
   if (newComment) {
     res.status(201).json({
-      comment: newComment,
+      review: newComment,
     });
   } else {
     res.status(400).json({

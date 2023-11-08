@@ -26,8 +26,10 @@ dbConnect(); //mongoose connection
 app.use("/users", userRoutes);
 app.use("/payments", paymentRoutes);
 // app.use("/topics", topicRoutes);
-// app.use("/comments", commentRoutes);
+app.use("/comments", commentRoutes);
 // app.use("/likeDislikes", likeDislikeRoutes);
+
+app.use("/uploads", express.static("uploads"));
 
 ///for products only
 app.get("/products", (req, res) => {
