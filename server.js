@@ -7,6 +7,7 @@ const app = express();
 const AppError = require("./utils/appError");
 const blogRoutes = require("./routes/blogRoutes");
 const userRoutes = require("./routes/userRoutes");
+const sellerRoutes = require("./routes/sellerRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const topicRoutes = require("./routes/topicRoutes");
 const commentRoutes = require("./routes/commentRoutes");
@@ -24,6 +25,7 @@ dbConnect(); //mongoose connection
 // Use BLOGPOST routes
 // app.use("/blogs", blogRoutes);
 app.use("/users", userRoutes);
+app.use("/sellers", sellerRoutes);
 app.use("/payments", paymentRoutes);
 // app.use("/topics", topicRoutes);
 app.use("/comments", commentRoutes);

@@ -4,14 +4,27 @@
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/userModel");
-
+const phoneNumberPattern = /^(?:\+91|0)?[6789]\d{9}$/;
+const validGenders = ["male", "female", "others"];
 const detailValidation = catchAsync(async (req, res, next) => {
-  const { name, email, password, passwordConfirm } = req.body;
+  const {
+    name,
+    email,
+    age,
+    gender,
+    phonenumber,
+    address,
+    password,
+    passwordConfirm,
+  } = req.body;
 
   let missingValues = [];
 
   if (!name) missingValues.push("Name ");
   if (!email) missingValues.push("Email ");
+  if (!age) missingValues.push("Age ");
+  if (!gender) missingValues.push("Gender ");
+  if (!address) missingValues.push("Address ");
   if (!password) missingValues.push("password ");
   if (!passwordConfirm) missingValues.push("passwordConfirm ");
 
@@ -23,7 +36,25 @@ const detailValidation = catchAsync(async (req, res, next) => {
       )
     );
   }
+  const userEmail = await User.findOne({ email });
+  if (userEmail) {
+    return next(new AppError("Email is Already Registered", 400));
+  }
 
+  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    return next(new AppError("Email address is not valid", 400));
+  }
+
+  if (!phoneNumberPattern.test(phonenumber)) {
+    return next(
+      new AppError("Phone Number is not valid 10 digit Phone Number", 400)
+    );
+  }
+  if (!validGenders.includes(gender)) {
+    return next(
+      new AppError('Select Gender from "male","female" & "others" ', 400)
+    );
+  }
   if (password !== passwordConfirm) {
     return next(
       new AppError("Password and Password confirm are not the same", 400)
@@ -44,14 +75,6 @@ const detailValidation = catchAsync(async (req, res, next) => {
     );
   }
 
-  const userEmail = await User.findOne({ email });
-  if (userEmail) {
-    return next(new AppError("Email is Already Registered", 400));
-  }
-
-  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-    return next(new AppError("Email address is not valid", 400));
-  }
   next();
 });
 
