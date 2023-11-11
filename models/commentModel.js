@@ -5,13 +5,18 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  blog: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "BlogPost",
+  rating: {
+    type: Number,
+    required: true,
+  },
+
+  product: {
+    type: Number,
+    // ref: "Products",
   },
   commentBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    type: String,
+    // ref: "User",
   },
   date: {
     type: Date,
@@ -21,6 +26,6 @@ const commentSchema = new mongoose.Schema({
 commentSchema.plugin(mongooseDelete, { deletedAt: true });
 commentSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
-// const Comment = new mongoose.model("Comment", commentSchema);
+const Comment = new mongoose.model("Comment", commentSchema);
 
-// module.exports = Comment;
+module.exports = Comment;

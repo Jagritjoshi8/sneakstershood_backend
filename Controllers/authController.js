@@ -7,9 +7,18 @@ const bcrypt = require("bcryptjs");
 const upload = require("../Middleware/multerSetup");
 // ***********************SIGN TOKEN****************************
 
-const signToken = (id, name, email, address, age, phonenumber, gender) => {
+const signToken = (
+  id,
+  name,
+  email,
+  address,
+  age,
+  phonenumber,
+  gender,
+  profileimg
+) => {
   return jwt.sign(
-    { id, name, email, address, age, phonenumber, gender },
+    { id, name, email, address, age, phonenumber, gender, profileimg },
     process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_EXPIRES_IN,
@@ -24,7 +33,8 @@ const createSendToken = (user, statusCode, res) => {
     user.address,
     user.age,
     user.phonenumber,
-    user.gender
+    user.gender,
+    user.profileimg
   );
 
   res.status(statusCode).json({
@@ -44,7 +54,7 @@ const createSendToken = (user, statusCode, res) => {
 
 const signup = catchAsync(async (req, res, next) => {
   const { name, email, age, gender, phonenumber, address, password } = req.body;
-  console.log("file----", req.file);
+  // console.log("file----", req.file);
 
   const profileimg = req.file.path;
 
@@ -83,7 +93,8 @@ const login = catchAsync(async (req, res, next) => {
     user.address,
     user.age,
     user.phonenumber,
-    user.gender
+    user.gender,
+    user.profileimg
   );
 
   res.status(200).json({

@@ -9,13 +9,11 @@ const router = express.Router();
 router
   .route("/getAllComments")
   .get(authController.protect, commentController.getAllComments);
-router
-  .route("/getAllComments/:id")
-  .get(authController.protect, commentController.getCommentsOfBlog);
+router.route("/getAllComments/:id").get(commentController.getCommentsOfBlog);
 
 router
   .route("/:id?")
-  .post(authController.protect, IDvalidation, commentController.createComment)
+  .post(commentController.createComment)
   .get(authController.protect, IDvalidation, commentController.getCommentById)
   .delete(
     authController.protect,
