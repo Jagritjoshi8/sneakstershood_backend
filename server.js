@@ -8,6 +8,7 @@ const AppError = require("./utils/appError");
 const blogRoutes = require("./routes/blogRoutes");
 const userRoutes = require("./routes/userRoutes");
 const sellerRoutes = require("./routes/sellerRoutes");
+const productRoutes = require("./routes/productRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const topicRoutes = require("./routes/topicRoutes");
 const commentRoutes = require("./routes/commentRoutes");
@@ -29,6 +30,7 @@ app.use("/sellers", sellerRoutes);
 app.use("/payments", paymentRoutes);
 // app.use("/topics", topicRoutes);
 app.use("/comments", commentRoutes);
+app.use("/sneakers", productRoutes);
 // app.use("/likeDislikes", likeDislikeRoutes);
 
 app.use("/uploads", express.static("uploads"));

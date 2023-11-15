@@ -13,7 +13,7 @@ router.post(
   //   detailValidation,
   //   authController.signup
 );
-// router.post("/login", authController.login);
+ router.post("/signin-seller", authSellerController.sellersignin);
 // router.route("/").get(authController.protect, userController.getAllUsers);
 
 module.exports = router;
