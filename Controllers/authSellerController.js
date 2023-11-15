@@ -86,42 +86,39 @@ const sellersignup = catchAsync(async (req, res, next) => {
 
 // // ********************LOGGING IN USER ************************
 
-// const login = catchAsync(async (req, res, next) => {
-//   const { email, password } = req.body;
+const sellersignin = catchAsync(async (req, res, next) => {
+  const { businessEmail, password } = req.body;
 
-//   if (!email || !password) {
-//     return next(new AppError("please provide email and password!", 400));
-//   }
+  if (!businessEmail || !password) {
+    return next(new AppError("please provide email and password!", 400));
+  }
 
-//   const user = await User.findOne({ email }).select("+password"); //we use + bcz by default its selection is false in model
+  const seller = await Seller.findOne({ businessEmail }).select("+password"); //we use + bcz by default its selection is false in model
 
-//   if (!user || !(await bcrypt.compare(password, user.password))) {
-//     return next(new AppError("Incorrect email or password", 401));
-//   }
+  if (!seller || !(await bcrypt.compare(password, seller.password))) {
+    return next(new AppError("Incorrect email or password", 401));
+  }
 
-//   const token = signToken(
-//     user._id,
-//     user.name,
-//     user.email,
-//     user.address,
-//     user.age,
-//     user.phonenumber,
-//     user.gender,
-//     user.profileimg
-//   );
+  const token = signToken(
+    seller._id,
+    seller.businessName,
+    seller.businessEmail,
+    seller.businessAddress,
+    seller.pancardnumber,
+    seller.phonenumber,
+    seller.businessType,
+    seller.logoimg
+  );
 
-//   res.status(200).json({
-//     status: "success",
-//     _id: user._id,
-//     email,
-//     token,
-//     name: user.name,
-//     address: user.address,
-//     age: user.age,
-//     phonenumber: user.phonenumber,
-//     gender: user.gender,
-//   });
-// });
+  res.status(200).json({
+    status: "success",
+    _id: seller._id,
+    email,
+    token,
+    businessName: user.businessName,
+    businessEmail: user.businessEmail,
+  });
+});
 
 //******************************** Implementation of jwt ****************************
 // const protect = catchAsync(async (req, res, next) => {
@@ -159,4 +156,5 @@ const sellersignup = catchAsync(async (req, res, next) => {
 
 module.exports = {
   sellersignup,
+  sellersignin
 };
