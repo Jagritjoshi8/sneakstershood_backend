@@ -28,14 +28,14 @@ const getAllComments = catchAsync(async (req, res, next) => {
   });
 });
 
-//************************* GET COMMENT OF A BLOG **************************
+//************************* GET COMMENT OF A product **************************
 const getCommentsOfBlog = catchAsync(async (req, res, next) => {
   const id = req.params.id;
 
   const comments = await Comment.find();
 
   const productReviews = comments.filter(
-    (commentss) => commentss.product === Number(id)
+    (commentss) => commentss.product === id
   );
 
   res.status(200).json({
@@ -48,6 +48,7 @@ const getCommentsOfBlog = catchAsync(async (req, res, next) => {
 
 const createComment = catchAsync(async (req, res, next) => {
   const id = req.params.id;
+  // console.log(id);
   const newComment = await Comment.create({
     content: req.body.comment,
     rating: req.body.rating,

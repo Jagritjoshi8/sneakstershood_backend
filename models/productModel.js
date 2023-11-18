@@ -30,44 +30,45 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: [true, "please tell us Sneaker Size"],
     },
-   rating: {
-    type:Number,
-    default:2.5
+    rating: {
+      type: Number,
+      default: 2.5,
     },
-    reviews:{
-        type:Number,
-        default:0
+    reviews: {
+      type: Number,
+      default: 0,
     },
-    trending:{
-        type:Boolean,
-        default: false
+    trending: {
+      type: Boolean,
+      default: false,
     },
     brand: {
       type: String,
-       },
+    },
     color: {
       type: String,
     },
     qualityType: {
-        type: String,
-      },
-      sellerId:{
-        type:String,
-        require: [true, "pls provide quality type of sneaker"],
-      },
-      sellerName:{
-        type:String,
-        require: [true, "pls provide quality type of sneaker"],
+      type: String,
+    },
+    description: {
+      type: String,
+    },
+    sellerId: {
+      type: String,
+      require: [true, "pls provide quality type of sneaker"],
+    },
+    sellerName: {
+      type: String,
+      require: [true, "pls provide quality type of sneaker"],
+    },
 
-      },
-
-    productimg: {
+    img: {
       type: String,
     },
   },
   { timestamps: true }
 );
-
 
 const Product = new mongoose.model("Product", productSchema);
 module.exports = Product;

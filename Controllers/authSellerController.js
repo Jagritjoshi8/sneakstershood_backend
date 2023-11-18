@@ -9,9 +9,9 @@ const upload = require("../Middleware/multerSetup");
 
 const signToken = (
   id,
-  name,
-  email,
-  address,
+  businessName,
+  businessEmail,
+  businessAddress,
   pancardnumber,
   phonenumber,
   businessType,
@@ -20,9 +20,9 @@ const signToken = (
   return jwt.sign(
     {
       id,
-      name,
-      email,
-      address,
+      businessName,
+      businessEmail,
+      businessAddress,
       pancardnumber,
       phonenumber,
       businessType,
@@ -113,10 +113,9 @@ const sellersignin = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     _id: seller._id,
-    email,
     token,
-    businessName: user.businessName,
-    businessEmail: user.businessEmail,
+    businessName: seller.businessName,
+    businessEmail: seller.businessEmail,
   });
 });
 
@@ -156,5 +155,5 @@ const sellersignin = catchAsync(async (req, res, next) => {
 
 module.exports = {
   sellersignup,
-  sellersignin
+  sellersignin,
 };
