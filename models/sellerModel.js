@@ -17,16 +17,18 @@ const sellerSchema = new mongoose.Schema(
       validate: [validator.isEmail, "pls provide a valid email"],
     },
     pancardnumber: {
-      type: Number,
-      required: [true, "please tell us your age!"],
+      type: String,
+      required: [true, "please tell us your pancard number!"],
+      minlength: 10,
     },
     businessType: {
       type: String,
-      required: [true, "please tell us your gender!"],
+      required: [true, "please tell us your business type!"],
     },
     phonenumber: {
       type: Number,
       required: [true, "please tell us your phone number!"],
+      minlength: 10,
     },
     businessAddress: {
       type: String,

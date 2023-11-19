@@ -11,7 +11,7 @@ const commentSchema = new mongoose.Schema({
   },
 
   product: {
-    type: Number,
+    type: String,
     // ref: "Products",
   },
   commentBy: {

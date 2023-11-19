@@ -3,6 +3,7 @@ const productController = require("../Controllers/productController");
 const authController = require("../Controllers/authController");
 const blogDetailValidation = require("../Middleware/blogDetailValidation");
 const IDvalidation = require("../Middleware/IDvalidation");
+const upload = require("../Middleware/multerSetup");
 
 const router = express.Router();
 
@@ -23,14 +24,23 @@ const router = express.Router();
 // );
 
 // // *****************************GET ALL BLOGS*****************************
-// router.get("/getAllBlogs", blogController.getAllBlogPosts);
+router.get("/getAllProducts", productController.getAllProducts);
 
 // **********************************CREATE A NEW BLOG********************
 router.post(
   "/create-product",
-  productController.createproduct,
-//   authController.protect,
-//   blogDetailValidation,
+  upload.single("productimg"),
+  productController.createproduct
+  //   authController.protect,
+  //   blogDetailValidation,
+);
+
+// //****************************GET POST BY TOPIC*****************************
+
+router.get(
+  "/getSellerProducts/:id?",
+  IDvalidation,
+  productController.getSellerProducts
 );
 
 // //******************************** CRUD *****************************************
@@ -47,9 +57,5 @@ router.post(
 //     IDvalidation,
 //     blogController.deleteBlogPostById
 //   );
-
-// //****************************GET POST BY TOPIC*****************************
-
-// router.get("/topics/:id?", IDvalidation, blogController.getPostsByTopic);
 
 module.exports = router;

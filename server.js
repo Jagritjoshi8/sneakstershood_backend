@@ -16,6 +16,7 @@ const likeDislikeRoutes = require("./routes/likeDislikeRoutes");
 const errorFormatter = require("./ErrorHandler/errorFormatter");
 const dbConnect = require("./Config/dbConnect");
 const products = require("./products");
+const Product = require("./models/productModel");
 
 // Parse JSON request body
 app.use(express.json());
@@ -39,6 +40,21 @@ app.use("/uploads", express.static("uploads"));
 app.get("/products", (req, res) => {
   res.send(products);
 });
+// Product.insertMany(products)
+//   .then(() => {
+//     console.log("Data inserted successfully!");
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });
+
+// Product.deleteMany({})
+//   .then(() => {
+//     console.log("Data deleted successfully!");
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });
 
 app.all("*", (req, res, next) => {
   return next(
