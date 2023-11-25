@@ -17,6 +17,8 @@ const errorFormatter = require("./ErrorHandler/errorFormatter");
 const dbConnect = require("./Config/dbConnect");
 const products = require("./products");
 const Product = require("./models/productModel");
+const CHAT_ENGINE_PROJECT_ID = "c18b96cf-f444-4fa1-b996-67a97fb9ca86";
+const CHAT_ENGINE_PRIVATE_KEY = "3955815d-44a9-425d-bfa3-74dded157c1b";
 
 // Parse JSON request body
 app.use(express.json());
@@ -63,6 +65,42 @@ app.all("*", (req, res, next) => {
 });
 
 app.use(errorFormatter);
+
+app.post("channel/signup", async (req, res) => {
+  const { username, secret, email, first_name, last_name } = req.body;
+
+  // Store a user-copy on Chat Engine!
+  // Docs at rest.chatengine.io
+  try {
+    const r = await axios.post(
+      "https://api.chatengine.io/users/",
+      { username, secret, email, first_name, last_name },
+      { headers: { "Private-Key": CHAT_ENGINE_PRIVATE_KEY } }
+    );
+    return res.status(r.status).json(r.data);
+  } catch (e) {
+    return res.status(e.response.status).json(e.response.data);
+  }
+});
+
+app.post("channel/login", async (req, res) => {
+  const { username, secret } = req.body;
+
+  // Fetch this user from Chat Engine in this project!
+  // Docs at rest.chatengine.io
+  try {
+    const r = await axios.get("https://api.chatengine.io/users/me/", {
+      headers: {
+        "Project-ID": CHAT_ENGINE_PROJECT_ID,
+        "User-Name": username,
+        "User-Secret": secret,
+      },
+    });
+    return res.status(r.status).json(r.data);
+  } catch (e) {
+    return res.status(e.response.status).json(e.response.data);
+  }
+});
 
 //starting server
 app.listen(PORT, () => {

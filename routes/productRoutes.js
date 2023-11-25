@@ -23,19 +23,23 @@ const router = express.Router();
 //   blogController.getMostLikedBlog
 // );
 
-// // *****************************GET ALL BLOGS*****************************
+// // *****************************GET ALL PRODUCTS*****************************
 router.get("/getAllProducts", productController.getAllProducts);
 
-// **********************************CREATE A NEW BLOG********************
+// **********************************CREATE A NEW PRODUCT********************
 router.post(
   "/create-product",
   upload.single("productimg"),
   productController.createproduct
   //   authController.protect,
-  //   blogDetailValidation,
 );
 
-// //****************************GET POST BY TOPIC*****************************
+router.post(
+  "/restoreProducts/:id?",
+  productController.restoreProducts
+  //   authController.protect,
+);
+// //****************************GET PRODUCTS BY SELLER ID*****************************
 
 router.get(
   "/getSellerProducts/:id?",
@@ -43,19 +47,28 @@ router.get(
   productController.getSellerProducts
 );
 
-// //******************************** CRUD *****************************************
-// router
-//   .route("/:id?")
-//   .get(IDvalidation, blogController.getBlogPostById)
-//   .patch(
-//     authController.protect,
-//     IDvalidation,
-//     blogController.updateBlogPostById
-//   )
-//   .delete(
-//     authController.protect,
-//     IDvalidation,
-//     blogController.deleteBlogPostById
-//   );
+router.get(
+  "/getDeletedSellerProducts/:id?",
+  IDvalidation,
+  productController.getDeletedSellerProducts
+);
+router
+  .route("/hardDelete/:id?")
+  .delete(IDvalidation, productController.hardDeleteProductById);
+//******************************** CRUD *****************************************
+router
+  .route("/:id?")
+  .delete(IDvalidation, productController.deleteProductById)
+  .patch(
+    IDvalidation,
+    upload.single("productimg"),
+    productController.updateProductById
+  );
+// .get(IDvalidation, blogController.getBlogPostById)
+// .patch(
+//   authController.protect,
+//   IDvalidation,
+//   blogController.updateBlogPostById
+// )
 
 module.exports = router;

@@ -24,6 +24,7 @@ const OrderSchema = new mongoose.Schema(
       required: true,
     },
     orderItems: { type: Object, required: true },
+    orderStatus: { type: String, default: "Pending" },
   },
   { timestamps: true }
 );

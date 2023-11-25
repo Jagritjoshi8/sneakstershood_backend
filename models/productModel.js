@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseDelete = require("mongoose-delete");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 
@@ -70,5 +71,7 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+productSchema.plugin(mongooseDelete, { deletedAt: true });
+productSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 const Product = new mongoose.model("Product", productSchema);
 module.exports = Product;
