@@ -42,6 +42,40 @@ app.use("/uploads", express.static("uploads"));
 app.get("/products", (req, res) => {
   res.send(products);
 });
+app.post("/channel/signup", async (req, res) => {
+  const { username, secret, email, first_name, last_name } = req.body;
+  console.log(req.body);
+
+  // Store a user-copy on Chat Engine!
+  // Docs at rest.chatengine.io
+  try {
+    const r = await axios.post(
+      "https://api.chatengine.io/users/",
+      { username, secret, email, first_name, last_name },
+      { headers: { "Private-Key": CHAT_ENGINE_PRIVATE_KEY } }
+    );
+    return res.status(r.status).json(r.data);
+  } catch (e) {}
+});
+
+app.post("/channel/login", async (req, res) => {
+  const { username, secret } = req.body;
+
+  // Fetch this user from Chat Engine in this project!
+  // Docs at rest.chatengine.io
+  try {
+    const r = await axios.get("https://api.chatengine.io/users/me/", {
+      headers: {
+        "Project-ID": CHAT_ENGINE_PROJECT_ID,
+        "User-Name": username,
+        "User-Secret": secret,
+      },
+    });
+    return res.status(r.status).json(r.data);
+  } catch (e) {
+    return res.status(e.response.status).json(e.response.data);
+  }
+});
 // Product.insertMany(products)
 //   .then(() => {
 //     console.log("Data inserted successfully!");
@@ -65,42 +99,6 @@ app.all("*", (req, res, next) => {
 });
 
 app.use(errorFormatter);
-
-app.post("channel/signup", async (req, res) => {
-  const { username, secret, email, first_name, last_name } = req.body;
-
-  // Store a user-copy on Chat Engine!
-  // Docs at rest.chatengine.io
-  try {
-    const r = await axios.post(
-      "https://api.chatengine.io/users/",
-      { username, secret, email, first_name, last_name },
-      { headers: { "Private-Key": CHAT_ENGINE_PRIVATE_KEY } }
-    );
-    return res.status(r.status).json(r.data);
-  } catch (e) {
-    return res.status(e.response.status).json(e.response.data);
-  }
-});
-
-app.post("channel/login", async (req, res) => {
-  const { username, secret } = req.body;
-
-  // Fetch this user from Chat Engine in this project!
-  // Docs at rest.chatengine.io
-  try {
-    const r = await axios.get("https://api.chatengine.io/users/me/", {
-      headers: {
-        "Project-ID": CHAT_ENGINE_PROJECT_ID,
-        "User-Name": username,
-        "User-Secret": secret,
-      },
-    });
-    return res.status(r.status).json(r.data);
-  } catch (e) {
-    return res.status(e.response.status).json(e.response.data);
-  }
-});
 
 //starting server
 app.listen(PORT, () => {
