@@ -55,6 +55,10 @@ const userSchema = new mongoose.Schema(
     profileimg: {
       type: String,
     },
+    resetToken: {
+      type: String,
+      default: undefined,
+    },
   },
   { timestamps: true }
 );

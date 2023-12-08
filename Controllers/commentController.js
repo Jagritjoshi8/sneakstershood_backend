@@ -58,7 +58,7 @@ const createComment = catchAsync(async (req, res, next) => {
   });
   const reqProduct = await Product.findById(id);
   reqProduct.reviews++;
-  reqProduct.rating = (reqProduct.rating + req.body.rating) / 2;
+  reqProduct.rating = ((reqProduct.rating + req.body.rating) / 2).toFixed(1);
   await reqProduct.save();
   if (newComment) {
     res.status(201).json({
