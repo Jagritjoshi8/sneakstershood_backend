@@ -25,12 +25,7 @@ router.get(
 router.get("/getAllBlogs", blogController.getAllBlogPosts);
 
 // **********************************CREATE A NEW BLOG********************
-router.post(
-  "/create",
-  authController.protect,
-  blogDetailValidation,
-  blogController.createBlogPost
-);
+router.post("/create", blogController.createBlogPost);
 
 //******************************** CRUD *****************************************
 router

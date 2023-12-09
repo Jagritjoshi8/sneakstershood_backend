@@ -3,45 +3,38 @@ const mongooseDelete = require("mongoose-delete");
 
 const BlogPostSchema = new mongoose.Schema(
   {
-    title: {
+    sellerName: {
       type: String,
       required: true,
       trim: true,
     },
-    author: {
-      type: String,
-      ref: "User",
-    },
-    blogTopic: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Topic",
-    },
-    content: {
+    sellerLogo: {
       type: String,
       required: true,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    blogImageUrl: {
+      type: String,
+      required: true,
     },
-    totalLikes: {
-      type: Number,
-      default: 0,
+    blogPosterUrl: {
+      type: String,
+      required: true,
+    },
+    blogHashTags: {
+      type: String,
+      required: true,
+    },
+    blogContent: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }
 );
 
-BlogPostSchema.virtual("topicName", {
-  ref: "Topic",
-  localField: "blogTopic",
-  foreignField: "_id",
-  justOne: true,
-  select: "name",
-});
 BlogPostSchema.plugin(mongooseDelete, { deletedAt: true });
 BlogPostSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
-// const BlogPostModel = new mongoose.model("BlogPost", BlogPostSchema);
+const BlogPostModel = new mongoose.model("BlogPost", BlogPostSchema);
 
-// module.exports = BlogPostModel;
+module.exports = BlogPostModel;

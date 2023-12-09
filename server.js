@@ -37,6 +37,7 @@ app.use("/comments", commentRoutes);
 app.use("/sneakers", productRoutes);
 // app.use("/likeDislikes", likeDislikeRoutes);
 app.use("/channel", channelRoutes);
+app.use("/sellerblogs", blogRoutes);
 app.use("/uploads", express.static("uploads"));
 
 ///for products only
