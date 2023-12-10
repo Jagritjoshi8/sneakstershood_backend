@@ -13,5 +13,8 @@ router.post(
 );
 router.post("/login", authController.login);
 router.route("/").get(authController.protect, userController.getAllUsers);
+router.post("/forgotPassword", authController.forgotPassword);
+router.patch("/resetPassword/:id", authController.resetPassword);
+router.post("/userMailQuery", authController.userMailQuery);
 
 module.exports = router;

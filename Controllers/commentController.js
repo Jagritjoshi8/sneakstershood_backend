@@ -2,6 +2,7 @@ const Comment = require("../models/commentModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const BlogPostModel = require("../models/blogModel");
+const Product = require("../models/productModel");
 const { default: mongoose } = require("mongoose");
 
 // ******************************** GET ALL COMMENTS ********************************
@@ -55,7 +56,10 @@ const createComment = catchAsync(async (req, res, next) => {
     product: id,
     commentBy: req.body.user,
   });
-
+  const reqProduct = await Product.findById(id);
+  reqProduct.reviews++;
+  reqProduct.rating = ((reqProduct.rating + req.body.rating) / 2).toFixed(1);
+  await reqProduct.save();
   if (newComment) {
     res.status(201).json({
       review: newComment,

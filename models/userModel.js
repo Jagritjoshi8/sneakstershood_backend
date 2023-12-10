@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: [true, "please tell us your name!"],
+      minlength: 6,
     },
 
     email: {
@@ -31,6 +32,7 @@ const userSchema = new mongoose.Schema(
     address: {
       type: String,
       required: [true, "please tell us your address!"],
+      minlength: 10,
     },
 
     password: {
@@ -52,6 +54,10 @@ const userSchema = new mongoose.Schema(
     },
     profileimg: {
       type: String,
+    },
+    resetToken: {
+      type: String,
+      default: undefined,
     },
   },
   { timestamps: true }

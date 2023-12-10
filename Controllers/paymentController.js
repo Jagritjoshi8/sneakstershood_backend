@@ -91,8 +91,88 @@ const getUserOrder = catchAsync(async (req, res, next) => {
   });
 });
 
+const getSellerOrder = catchAsync(async (req, res, next) => {
+  const sellerid = req.params.id;
+  // console.log(userid);
+  //   const uname = "sneaker1";
+  // const sellerOrder = await OrderModel.find({
+  //   "orderItems.sellerId": sellerid,
+  // });
+  const sellerOrder = await OrderModel.aggregate([
+    {
+      $match: { "orderItems.sellerId": sellerid },
+    },
+    {
+      $project: {
+        orderItems: {
+          $filter: {
+            input: "$orderItems",
+            as: "item",
+            cond: { $eq: ["$$item.sellerId", sellerid] },
+          },
+        },
+        sellerPriceSum: {
+          $sum: {
+            $map: {
+              input: {
+                $filter: {
+                  input: "$orderItems",
+                  as: "item",
+                  cond: { $eq: ["$$item.sellerId", sellerid] },
+                },
+              },
+              as: "item",
+              in: {
+                $multiply: ["$$item.discounted_price", "$$item.cartQuantity"],
+              },
+            },
+          },
+        },
+        orderStatus: "$orderStatus",
+        coustomerDetails: "$coustomerDetails",
+        deliveryAddress: "$deliveryAddress",
+        deliveryDate: "$deliveryDate",
+        createdAt: 1,
+      },
+    },
+  ]);
+
+  if (!sellerOrder || sellerOrder?.length === 0)
+    return next(new AppError("You have no current orders", 404));
+
+  res.status(200).json({
+    success: true,
+    totalOrders: sellerOrder?.length,
+    sellerOrder,
+  });
+});
+const updateOrderById = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+
+  const { orderStatus } = req.body;
+  console.log(id, req.body);
+  const updated = await OrderModel.findByIdAndUpdate(
+    id,
+    { orderStatus },
+    {
+      new: true,
+    }
+  );
+  console.log(updated);
+
+  if (updated) {
+    res.status(201).json({
+      msg: "Blog Updated Successfully",
+      orderStatus,
+    });
+  } else {
+    return next(new AppError("Something went wrong", 500));
+  }
+});
 module.exports = {
   checkout,
   paymentVerification,
   getUserOrder,
+  getSellerOrder,
+  updateOrderById,
 };

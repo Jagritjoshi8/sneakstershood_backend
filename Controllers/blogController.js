@@ -11,28 +11,34 @@ const LikeDislike = require("../models/likeDislikeModel");
 
 const createBlogPost = catchAsync(
   async (req, res, next) => {
-    const { title, author, content, blogTopic } = req.body;
-
-    const topic = await TopicModel.findById(blogTopic);
-
-    const topicName = topic.name;
+    console.log(req.body);
+    const {
+      sellerLogo,
+      sellerName,
+      blogImageUrl,
+      blogPosterUrl,
+      blogHashTags,
+      blogContent,
+    } = req.body;
 
     const blogPost = await BlogPostModel.create({
-      title,
-      author: req.user.name,
-      blogTopic,
-      content,
-      user: req.user.id,
+      sellerName,
+      sellerLogo,
+      blogImageUrl,
+      blogPosterUrl,
+      blogContent,
+      blogHashTags,
     });
 
     res.status(201).json({
       _id: blogPost._id,
-      title,
-      author,
-      blogTopicID: topic._id,
-      blogTopic: topicName,
-      content,
-      user: req.user.id,
+      sellerName,
+      sellerLogo,
+      blogImageUrl,
+      blogPosterUrl,
+      blogContent,
+      blogHashTags,
+      createdAt: blogPost.createdAt,
     });
   },
   (error) => {
@@ -43,9 +49,7 @@ const createBlogPost = catchAsync(
 //***************************** GET ALL BLOGPOSTS ************************************
 const getAllBlogPosts = catchAsync(async (req, res, next) => {
   // await BlogPostModel.restore();
-  const blogPosts = await BlogPostModel.find()
-    .populate("blogTopic", "name")
-    .lean();
+  const blogPosts = await BlogPostModel.find();
   res.status(200).json({
     numberOfBlogs: blogPosts.length,
     blogPosts,
