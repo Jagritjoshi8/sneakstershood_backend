@@ -158,7 +158,7 @@ const updateOrderById = catchAsync(async (req, res, next) => {
       new: true,
     }
   );
-  console.log(updated);
+  // console.log(updated);
 
   if (updated) {
     res.status(201).json({
