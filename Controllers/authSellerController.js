@@ -119,40 +119,6 @@ const sellersignin = catchAsync(async (req, res, next) => {
   });
 });
 
-//******************************** Implementation of jwt ****************************
-// const protect = catchAsync(async (req, res, next) => {
-//   //  1)************ Getting token and check if it exits*************
-//   let token;
-//   if (
-//     req.headers.authorization &&
-//     req.headers.authorization.startsWith("Bearer")
-//   ) {
-//     token = req.headers.authorization.split(" ")[1];
-//   }
-
-//   if (!token) {
-//     return next(
-//       new AppError("You are not logged in please login to get access.", 401)
-//     );
-//   }
-
-//   // 2)******************verification token************************
-
-//   const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-//   //console.log(decode);
-//   // 3)************check if user still exists******************
-
-//   const currentUser = await User.findById(decode.id);
-//   if (!currentUser) {
-//     return next(
-//       new AppError("The user belonging to this token no longer exists", 401)
-//     );
-//   }
-//   //***** grant access to protected routes ******
-//   req.user = currentUser; //putting user data in request
-//   next();
-// });
-
 module.exports = {
   sellersignup,
   sellersignin,

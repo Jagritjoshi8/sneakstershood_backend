@@ -6,19 +6,8 @@ const IDvalidation = require("../Middleware/IDvalidation");
 
 const router = express.Router();
 
-router
-  .route("/getAllComments")
-  .get(authController.protect, commentController.getAllComments);
-router.route("/getAllComments/:id").get(commentController.getCommentsOfBlog);
+router.route("/getAllComments/:id").get(commentController.getCommentsOfProduct);
 
-router
-  .route("/:id?")
-  .post(commentController.createComment)
-  .get(authController.protect, IDvalidation, commentController.getCommentById)
-  .delete(
-    authController.protect,
-    IDvalidation,
-    commentController.deleteComment
-  );
+router.route("/:id?").post(commentController.createComment);
 
 module.exports = router;

@@ -1,10 +1,8 @@
-const { promisify } = require("util");
-const jwt = require("jsonwebtoken");
 const Product = require("../models/productModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
-const bcrypt = require("bcryptjs");
 
+/******************* Create Product ***************/
 const createproduct = catchAsync(
   async (req, res, next) => {
     const {
@@ -21,13 +19,10 @@ const createproduct = catchAsync(
       sellerId,
       sellerName,
     } = req.body;
-    // console.log("file----", req.file);
-    //console.log(req.body);
     const discounted_price = Math.floor(
       original_price - original_price * (discountper / 100)
     );
     const productimg = req.file.path;
-    // console.log("product img", productimg);
     const newProduct = await Product.create({
       name,
       original_price,
@@ -59,7 +54,6 @@ const createproduct = catchAsync(
 );
 
 const getAllProducts = catchAsync(async (req, res, next) => {
-  // await BlogPostModel.restore();
   const allProducts = await Product.find();
 
   res.status(200).json({
@@ -68,8 +62,6 @@ const getAllProducts = catchAsync(async (req, res, next) => {
 });
 
 const restoreProducts = catchAsync(async (req, res, next) => {
-  // await BlogPostModel.restore();
-
   const productid = req.params.id;
   await Product.restore({ _id: productid });
   const restoredProduct = await Product.findById(productid);
@@ -81,8 +73,6 @@ const restoreProducts = catchAsync(async (req, res, next) => {
 
 const getSellerProducts = catchAsync(async (req, res, next) => {
   const sellerid = req.params.id;
-  // console.log(userid);
-  //   const uname = "sneaker1";
   const sellerProducts = await Product.find({ sellerId: sellerid });
 
   if (!sellerProducts || sellerProducts.length === 0)
@@ -97,8 +87,6 @@ const getSellerProducts = catchAsync(async (req, res, next) => {
 
 const getDeletedSellerProducts = catchAsync(async (req, res, next) => {
   const sellerid = req.params.id;
-  // console.log(userid);
-  //   const uname = "sneaker1";
   const sellerProducts = await Product.findDeleted({ sellerId: sellerid });
 
   if (!sellerProducts || sellerProducts.length === 0)
@@ -110,7 +98,8 @@ const getDeletedSellerProducts = catchAsync(async (req, res, next) => {
     sellerProducts,
   });
 });
-//**************Update Product By Id */
+
+//**************Update Product By Id *********************/
 const updateProductById = catchAsync(async (req, res, next) => {
   const id = req.params.id;
 
@@ -126,22 +115,6 @@ const updateProductById = catchAsync(async (req, res, next) => {
       new: true,
     }
   );
-  console.log(updated);
-  // const temp = [
-  //   {
-  //     ...updated.toJSON(),
-  //     topic: updated.topicName,
-  //   },
-  // ];
-  // // console.log(temp);
-
-  // const updatedBlog = temp.map((blog) => {
-  //   const { blogTopic, topic, ...rest } = blog;
-  //   return {
-  //     ...rest,
-  //     blogTopic: topic.name,
-  //   };
-  // });
 
   if (updated) {
     res.status(201).json({
@@ -151,14 +124,12 @@ const updateProductById = catchAsync(async (req, res, next) => {
     return next(new AppError("Something went wrong", 500));
   }
 });
-//***************************** DELETE A BLOGPOST ***********************************
+//***************************** DELETE A Product ***********************************
 
 const deleteProductById = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   if (!id) return next(new AppError("ID is not present in parameter", 403));
 
-  // await LikeDislike.delete({ blog: id });
-  // await Comment.delete({ blog: id });
   const deletedProduct = await Product.findById(id);
   const deleted = await Product.delete({ _id: id });
   if (deleted) {
@@ -175,8 +146,6 @@ const hardDeleteProductById = catchAsync(async (req, res, next) => {
   const id = req.params.id;
   if (!id) return next(new AppError("ID is not present in parameter", 403));
 
-  // await LikeDislike.delete({ blog: id });
-  // await Comment.delete({ blog: id });
   const deletedProduct = await Product.findDeleted({ _id: id });
   const deleted = await Product.findByIdAndDelete(id);
   if (deleted) {

@@ -55,8 +55,6 @@ const createSendToken = (user, statusCode, res) => {
 
 const signup = catchAsync(async (req, res, next) => {
   const { name, email, age, gender, phonenumber, address, password } = req.body;
-  // console.log("file----", req.file);
-
   const profileimg = req.file.path;
 
   const newUser = await User.create({

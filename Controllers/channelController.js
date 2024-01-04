@@ -15,8 +15,6 @@ const signup = catchAsync(async (req, res, next) => {
       message: "Secret & ConfirmSecret is Not Same",
     });
   }
-  // Store a user-copy on Chat Engine!
-  // Docs at rest.chatengine.io
   try {
     const r = await axios.post(
       "https://api.chatengine.io/users/",

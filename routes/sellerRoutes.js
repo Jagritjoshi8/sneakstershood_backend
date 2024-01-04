@@ -10,10 +10,7 @@ router.post(
   "/signup-seller",
   upload.single("logoimg"),
   authSellerController.sellersignup
-  //   detailValidation,
-  //   authController.signup
 );
- router.post("/signin-seller", authSellerController.sellersignin);
-// router.route("/").get(authController.protect, userController.getAllUsers);
+router.post("/signin-seller", authSellerController.sellersignin);
 
 module.exports = router;

@@ -93,11 +93,6 @@ const getUserOrder = catchAsync(async (req, res, next) => {
 
 const getSellerOrder = catchAsync(async (req, res, next) => {
   const sellerid = req.params.id;
-  // console.log(userid);
-  //   const uname = "sneaker1";
-  // const sellerOrder = await OrderModel.find({
-  //   "orderItems.sellerId": sellerid,
-  // });
   const sellerOrder = await OrderModel.aggregate([
     {
       $match: { "orderItems.sellerId": sellerid },

@@ -12,11 +12,9 @@ const commentSchema = new mongoose.Schema({
 
   product: {
     type: String,
-    // ref: "Products",
   },
   commentBy: {
     type: String,
-    // ref: "User",
   },
   date: {
     type: Date,
